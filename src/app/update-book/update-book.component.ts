@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig,BsLocaleService } from 'ngx-bootstrap/datepicker';
 import {enGbLocale} from 'ngx-bootstrap/locale';
 import { defineLocale } from 'ngx-bootstrap/chronos';
+import { BookServiceService } from '../Shared/Services/book-service.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class UpdateBookComponent {
     private httpClient: HttpClient,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private bookService :BookServiceService
   ) {
     enGbLocale.invalidDate = 'Custom label';
     defineLocale('custom locale', enGbLocale); 
@@ -44,13 +46,12 @@ export class UpdateBookComponent {
     this.routeSub = this.route.params.subscribe((params) => {
       this.bookId = params['id'];
     });
-    this.GetBookDetails(this.bookId);
+    this.GetBookDetails();
   }
   UpdateBookData() {}
 
-  GetBookDetails(bookId: string) {
-    this.httpClient
-      .get(`https://localhost:44304/api/Books/GetBookById/${bookId}`)
+  GetBookDetails() {
+    this.bookService.GetBookById(this.bookId)
       .subscribe({
         next: (response: any) => {
           debugger;
@@ -80,8 +81,7 @@ export class UpdateBookComponent {
     console.log(this.editBookForm);
     this.model = { ...this.editBookForm.value , id : this.bookId};
 
-    this.httpClient
-      .put('https://localhost:44304/api/Books', this.model)
+    this.bookService.UpdateBookById(this.model)
       .subscribe({
         next: (response: any) => {
           debugger;

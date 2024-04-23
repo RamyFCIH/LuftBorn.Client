@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
+import { BookServiceService } from '../Shared/Services/book-service.service';
 
 @Component({
   selector: 'app-create-new-book',
@@ -20,7 +21,8 @@ export class CreateNewBookComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private httpClient: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private booksService : BookServiceService
   ) {this.bsConfig = {
     containerClass: 'theme-red',
     dateInputFormat: 'DD MMMM YYYY',
@@ -46,8 +48,7 @@ export class CreateNewBookComponent implements OnInit {
     console.log(this.createBookForm);
     this.model = { ...this.createBookForm.value };
    
-    this.httpClient
-      .post('https://localhost:44304/api/Books', this.model)
+   this.booksService.CreateNewBook(this.model)
       .subscribe({
         next: (response: any) => {
           if (response.isSuccess) {

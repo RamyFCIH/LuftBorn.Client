@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { Router } from '@angular/router';
+import { BookServiceService } from '../Shared/Services/book-service.service';
 
 @Component({
   selector: 'app-list-all-books',
@@ -17,7 +17,8 @@ export class ListAllBooksComponent implements OnInit {
     private httpClient: HttpClient,
     private toastr: ToastrService,
     public dialog: MatDialog,
-    private router : Router
+    private router: Router,
+    private booksService: BookServiceService
   ) {}
 
   ngOnInit(): void {
@@ -25,32 +26,32 @@ export class ListAllBooksComponent implements OnInit {
   }
 
   GetAllBooks() {
-    this.httpClient.get('https://localhost:44304/api/Books').subscribe({
+    this.booksService.GetAllBooks().subscribe({
       next: (response) => (this.books = response),
       error: () => {},
       complete: () => {},
     });
   }
   DeleteBookById(id: string): void {
-    this.httpClient
-      .delete(`https://localhost:44304/api/Books/${id}`)
-      .subscribe({
-        next: (response : any) => {
-          this.toastr.success(response.message);
-          this.GetAllBooks();
-        },
-        error: (response:any) => {this.toastr.error(response.message)},
-        complete: () => {},
-      });
+    this.booksService.DeleteBookById(id).subscribe({
+      next: (response: any) => {
+        this.toastr.success(response.message);
+        this.GetAllBooks();
+      },
+      error: (response: any) => {
+        this.toastr.error(response.message);
+      },
+      complete: () => {},
+    });
   }
-  
-  openDialog(bookId : string) {
+
+  openDialog(bookId: string) {
     const dialogRef = this.dialog.open(AlertDialogComponent);
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         debugger;
-       this.DeleteBookById(bookId);
+        this.DeleteBookById(bookId);
       }
-  });
-}
+    });
+  }
 }
