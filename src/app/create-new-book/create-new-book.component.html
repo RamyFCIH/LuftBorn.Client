@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-4">
+    <h1>Create New Book</h1>
+  </div>
+</div>
+
+<div class="row">
+  <form
+    [formGroup]="createBookForm"
+    (ngSubmit)="CreateNewBook()"
+    autocomplete="off"
+  >
+    <div class="row">
+      <input
+        [class.is-invalid]="
+          (createBookForm.get('name')?.errors &&
+          createBookForm.get('name')?.touched) || submitted
+        "
+        class="form-control"
+        name="name"
+        type="name"
+        placeholder="Book Name"
+        aria-label="Book Name"
+        formControlName="name"
+      />
+      <div class="invalid-feedback" >
+        Please enter Book Name
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px">
+      <input
+      [class.is-invalid]="
+      (createBookForm.get('description')?.errors &&
+      createBookForm.get('description')?.touched) || submitted
+    "
+        class="form-control"
+        name="description"
+        type="description"
+        placeholder="Book Description"
+        aria-label="Book Description"
+        formControlName="description"
+      />
+      <div class="invalid-feedback" >
+        Please enter Book Description
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+      <input
+      [class.is-invalid]="
+      (createBookForm.get('publishedDate')?.errors &&
+      createBookForm.get('publishedDate')?.touched) || submitted
+    "
+        class="form-control"
+        bsDatepicker
+        [bsConfig]="bsConfig"
+        name="publishedDate"
+        type="text"
+        placeholder="Published Date"
+        aria-label="Published Date"
+        formControlName="publishedDate"
+      />  <div class="invalid-feedback" >
+        Please enter Book Published Date
+      </div>
+    </div>
+    <button
+      style="margin-top: 10px"
+      class="btn btn-success"
+      type="submit"
+      (click)="register()"
+    >
+      Submit
+    </button>
+    <button
+      style="margin-top: 10px; margin-left: 10px"
+      class="btn btn-danger"
+      type="submit"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+  </form>
+</div>
+<div class="row" *ngIf="validationErrors">
+    <ul class="text-danger">
+      <li *ngFor="let error of validationErrors">
+        {{ error }}
+      </li>
+    </ul>
+  </div>

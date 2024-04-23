@@ -1,0 +1,12 @@
+.navbar-dark, .navbar[data-bs-theme="dark"] {
+    background-color: #8a0000;
+}
+
+.btn-group-vertical > .btn, .btn-group > .btn {
+    background-color: #8a0000;
+    color: #fff;
+    border: none;
+}
+* {
+    font-family: noto;
+}

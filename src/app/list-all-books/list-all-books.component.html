@@ -1,0 +1,36 @@
+<div class="row" style="margin-top: 40px">
+  <div class="col">
+    <a id="addNewBook" class="nav-link btn btn-success" routerLink="/books/createBook" routerLinkActive="active"
+    >Add New Book</a
+  >
+  </div>
+</div>
+<table style="margin-top: 10px;" class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Book Id</th>
+      <th scope="col">Book Name</th>
+      <th scope="col">Desccription</th>
+      <th scope="col">Published Date</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <th scope="row">{{ book.id }}</th>
+      <td>{{ book.name }}</td>
+      <td>{{ book.description }}</td>
+      <td>{{ book.publishedDate | date: 'dd/MM/yyyy'  }}</td>
+      <td>
+        <a class="btn btn-primary" routerLink="/books/editBook/{{book.id}}">Edit</a>
+        <button
+          style="margin-left: 10px"
+          class="btn btn-danger"
+          (click)="openDialog(book.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
